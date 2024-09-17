@@ -4,13 +4,12 @@ import numpy as np
 import pandas as pd
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score, adjusted_rand_score, normalized_mutual_info_score
-from sklearn.model_selection import KFold, RandomizedSearchCV
-from scipy.stats import uniform
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.feature_selection import RFE
+from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.feature_selection import RFE
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 
 st.title("European Soccer Team Analysis Dashboard")
 
@@ -21,12 +20,12 @@ uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
     team_attributes_df = pd.read_csv(uploaded_file)
     st.write("Data uploaded successfully!")
-    st.write(team_attributes_df.head())  #show the first few rows of the data
+    st.write(team_attributes_df.head())  # Show the first few rows of the data
 
-        # Define the features
-    features = ['buildUpPlaySpeed', 'chanceCreationPassing',
-                'chanceCreationCrossing', 'chanceCreationShooting',
-                'defencePressure', 'defenceAggression', 'defenceTeamWidth']
+    # Define the features
+    features = ['buildUpPlaySpeed', 'chanceCreationPassing', 'chanceCreationCrossing', 
+                'chanceCreationShooting', 'defencePressure', 'defenceAggression', 
+                'defenceTeamWidth']
 
     # Define X (features) and y (target)
     X_team = team_attributes_df[features]
@@ -61,7 +60,11 @@ if uploaded_file is not None:
         st.write(f"Best Parameters for {title} Clustering:", random_search.best_params_)
         return best_gmm
 
-    n_components_team = 3
+    # Step 3: Let user define number of components (with default value)
+    st.subheader("Define Number of Components for Clustering")
+    n_components_team = st.number_input("Select number of components for Team Strategy Clustering:", 
+                                        min_value=2, max_value=10, value=3, step=1)
+    
     st.write("Tuning Hyperparameters for Team Strategy Clustering")
     best_gmm_team = tune_hyperparameters(X_team_scaled, n_components_team, "Team Strategy")
 
