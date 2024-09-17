@@ -15,7 +15,7 @@ from sklearn.manifold import TSNE
 st.title("European Soccer Team Analysis Dashboard")
 
 # Step 1: Upload CSV File
-st.subheader("Upload the Player Attributes CSV File")
+st.subheader("Upload the Team Attributes CSV File")
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
 if uploaded_file is not None:
