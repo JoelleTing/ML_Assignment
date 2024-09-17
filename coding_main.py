@@ -121,6 +121,26 @@ if uploaded_file is not None:
     st.subheader("Team Strategy Clustering Visualization")
     visualize_clusters_2d(X_team_scaled, team_labels, "Team Strategy")
 
+     # Visualization - Pairwise Clusters using Matplotlib
+    def plot_pairwise_clusters(X, labels, title):
+        df = pd.DataFrame(X, columns=[f"Feature {i+1}" for i in range(X.shape[1])])
+        df['Cluster'] = labels
+
+        # Plot pairwise scatter plots using Matplotlib
+        fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 10))
+        axes = axes.flatten()
+        for i in range(len(df.columns) - 1):
+            for j in range(i + 1, len(df.columns) - 1):
+                axes[i].scatter(df.iloc[:, i], df.iloc[:, j], c=labels, cmap='viridis', marker='o', alpha=0.7)
+                axes[i].set_xlabel(f"Feature {i+1}")
+                axes[i].set_ylabel(f"Feature {j+1}")
+                axes[i].set_title(f"Feature {i+1} vs Feature {j+1}")
+        fig.suptitle(f"{title} Pairwise Feature Distribution", y=1.02)
+        st.pyplot(fig)
+
+    st.subheader("Team Strategy Pairwise Feature Distribution")
+    plot_pairwise_clusters(X_team_scaled, team_labels, "Team Strategy")
+
      # Visualization - Cluster Centroids using Matplotlib
     def plot_cluster_centroids(gmm, X, labels, title):
         means = gmm.means_
