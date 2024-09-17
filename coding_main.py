@@ -8,7 +8,6 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 from sklearn.model_selection import KFold, RandomizedSearchCV
 from scipy.stats import uniform
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
