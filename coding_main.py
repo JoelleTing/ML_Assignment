@@ -21,7 +21,7 @@ uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
     team_attributes_df = pd.read_csv(uploaded_file)
     st.write("Data uploaded successfully!")
-    st.write(team_data.head())  #show the first few rows of the data
+    st.write(team_attributes_df.head())  #show the first few rows of the data
 
         # Define the features
     features = ['buildUpPlaySpeed', 'chanceCreationPassing',
@@ -29,8 +29,8 @@ if uploaded_file is not None:
                 'defencePressure', 'defenceAggression', 'defenceTeamWidth']
 
     # Define X (features) and y (target)
-    X_team = team_data[features]
-    y = team_data['year']
+    X_team = team_attributes_df[features]
+    y = team_attributes_df['year']
 
     # --- Step 2: Feature Selection using RFE ---
     st.subheader("Feature Selection using RFE")
