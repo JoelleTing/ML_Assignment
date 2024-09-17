@@ -10,6 +10,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import RFE
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 
 st.title("European Soccer Team Analysis Dashboard")
 
@@ -119,3 +120,40 @@ if uploaded_file is not None:
 
     st.subheader("Team Strategy Clustering Visualization")
     visualize_clusters_2d(X_team_scaled, team_labels, "Team Strategy")
+
+     # Visualization - Cluster Centroids using Matplotlib
+    def plot_cluster_centroids(gmm, X, labels, title):
+        means = gmm.means_
+
+        # Reduce dimensionality for visualization
+        pca = PCA(n_components=2)
+        X_pca = pca.fit_transform(X)
+        means_pca = pca.transform(means)
+
+        plt.figure(figsize=(10, 7))
+        plt.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='viridis', marker='o', s=50, alpha=0.7)
+        plt.scatter(means_pca[:, 0], means_pca[:, 1], s=200, c='red', marker='X', label='Centroids')
+        plt.title(f"{title} Clustering with Centroids (PCA)")
+        plt.xlabel("Principal Component 1")
+        plt.ylabel("Principal Component 2")
+        plt.legend()
+        st.pyplot(plt)
+
+    st.subheader("Team Strategy Clustering with Centroids")
+    plot_cluster_centroids(best_gmm_team, X_team_scaled, team_labels, "Team Strategy")
+
+    # Visualization - t-SNE using Matplotlib
+    def visualize_clusters_tsne(X, labels, title):
+        tsne = TSNE(n_components=2, random_state=42)
+        X_tsne = tsne.fit_transform(X)
+
+        plt.figure(figsize=(10, 7))
+        plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=labels, cmap='viridis', marker='o', s=50, alpha=0.7)
+        plt.title(f"{title} Clustering Visualization (t-SNE)")
+        plt.xlabel("t-SNE Dimension 1")
+        plt.ylabel("t-SNE Dimension 2")
+        plt.colorbar(label='Cluster')
+        st.pyplot(plt)
+
+    st.subheader("Team Strategy Clustering Visualization (t-SNE)")
+    visualize_clusters_tsne(X_team_scaled, team_labels, "Team Strategy")
